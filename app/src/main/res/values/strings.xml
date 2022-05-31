@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">FitMax</string>
+    <string name="password">password</string>
+    <string name="email">Email</string>
+    <string name="log_in">Log In</string>
+    <string name="signup">Don\'t have an account? <u>Sign Up</u></string>
 </resources>
