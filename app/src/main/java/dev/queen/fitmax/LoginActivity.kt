@@ -44,11 +44,11 @@ class LoginActivity : AppCompatActivity() {
         var pwd = etPwd.text.toString()
 
         if (email.isBlank()){
-            tilEmail.error = "@string/errorInEmail"
+            tilEmail.error = "Email required"
         }
 
         if (pwd.isBlank()){
-            tilPwd.error = "@string/errorInPassword"
+            tilPwd.error = "Password required"
         }
     }
 }
