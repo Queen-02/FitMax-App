@@ -4,4 +4,8 @@
     <string name="email">Email</string>
     <string name="log_in">Log In</string>
     <string name="signup">Don\'t have an account? <u>Sign Up</u></string>
+    <string name="errorInEmail">Email required</string>
+    <string name="errorInPassword">Password required</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="Login">Already have an account? <u>LogIn</u></string>
 </resources>
