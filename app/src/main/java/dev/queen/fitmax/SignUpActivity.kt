@@ -69,6 +69,7 @@ class SignUpActivity : AppCompatActivity() {
         var lName = etLastName.text.toString()
         var email = etEmil.text.toString()
         var pwd = etPassword.text.toString()
+        var confirm = etConfrimPassword.text.toString()
 
         if (fName.isBlank()){
             tilFirstName.error = "First name required"
@@ -84,6 +85,10 @@ class SignUpActivity : AppCompatActivity() {
 
         if (pwd.isBlank()){
             tilPassword.error = "Password required"
+        }
+
+        if (confirm.isBlank()){
+            tilConfirm.error = "Confirm password"
         }
     }
 }

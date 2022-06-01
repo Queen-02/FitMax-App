@@ -12,7 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
         app:boxBackgroundColor="#810B0A0A"
         app:boxBackgroundMode="outline"
@@ -29,6 +29,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:startIconDrawable="@drawable/ic_baseline_person_24"
         app:startIconTint="@color/white">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -42,6 +43,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilLastName"
         android:layout_width="0dp"
+        app:startIconDrawable="@drawable/ic_baseline_person_24"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="35dp"
@@ -74,6 +76,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tlEmail"
         android:layout_width="0dp"
+        app:startIconDrawable="@drawable/ic_baseline_email_24"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="35dp"
@@ -130,6 +133,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tlEmail"
         app:passwordToggleEnabled="true"
         app:passwordToggleTint="#FFFFFF"
+        app:startIconDrawable="@drawable/ic_baseline_lock_24"
         app:startIconTint="@color/white">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -167,6 +171,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tlPassword"
         app:passwordToggleEnabled="true"
         app:passwordToggleTint="#FFFFFF"
+        app:startIconDrawable="@drawable/ic_baseline_lock_24"
         app:startIconTint="@color/white">
 
         <com.google.android.material.textfield.TextInputEditText
