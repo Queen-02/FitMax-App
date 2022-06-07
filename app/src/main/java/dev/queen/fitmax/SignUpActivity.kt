@@ -4,8 +4,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.service.quicksettings.Tile
+import android.util.Patterns
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
@@ -71,6 +73,7 @@ class SignUpActivity : AppCompatActivity() {
         var pwd = etPassword.text.toString()
         var confirm = etConfrimPassword.text.toString()
 
+
         if (fName.isBlank()){
             tilFirstName.error = "First name required"
         }
@@ -83,12 +86,24 @@ class SignUpActivity : AppCompatActivity() {
             tilEmail.error = "Email required"
         }
 
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            tilEmail.error = "Email is invalid"
+        }
+
         if (pwd.isBlank()){
             tilPassword.error = "Password required"
         }
 
         if (confirm.isBlank()){
             tilConfirm.error = "Confirm password"
+        }
+
+        if (pwd != confirm){
+            tilConfirm.error = "Invalid password"
+
+        }
+        else{
+            Toast.makeText(applicationContext, "Confirmed password", Toast.LENGTH_SHORT).show()
         }
     }
 }
