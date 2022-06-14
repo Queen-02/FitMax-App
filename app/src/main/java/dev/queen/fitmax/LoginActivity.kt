@@ -50,5 +50,8 @@ class LoginActivity : AppCompatActivity() {
         if (pwd.isBlank()){
             tilPwd.error = "Password required"
         }
+
+        val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
     }
 }

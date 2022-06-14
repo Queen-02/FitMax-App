@@ -4,7 +4,7 @@
     <item android:drawable="@drawable/back_gradient"/>
 
     <item>
-        <bitmap android:gravity="fill"
+        <bitmap android:gravity="center"
             android:src="@drawable/logo"/>
     </item>
 </layer-list>

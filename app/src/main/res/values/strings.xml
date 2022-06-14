@@ -8,4 +8,7 @@
     <string name="errorInPassword">Password required</string>
     <string name="sign_up">Sign Up</string>
     <string name="Login">Already have an account? <u>LogIn</u></string>
+    <string name="profile">Profile</string>
+    <string name="track">Track</string>
+    <string name="plan">Plan</string>
 </resources>

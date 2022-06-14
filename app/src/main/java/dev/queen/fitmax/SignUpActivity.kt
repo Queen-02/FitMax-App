@@ -105,5 +105,8 @@ class SignUpActivity : AppCompatActivity() {
         else{
             Toast.makeText(applicationContext, "Confirmed password", Toast.LENGTH_SHORT).show()
         }
+
+        val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
     }
 }
