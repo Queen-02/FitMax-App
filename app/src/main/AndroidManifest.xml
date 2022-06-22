@@ -10,16 +10,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FitMax">
         <activity
-            android:name=".HomeActivity"
+            android:name=".home_and_splash.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".SignUpActivity"
+            android:name=".login_sign_up.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".login_sign_up.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".home_and_splash.SplashActivity"
             android:exported="true"
             android:theme="@style/SplashTheme">
             <intent-filter>
