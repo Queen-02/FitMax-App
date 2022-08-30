@@ -1,4 +1,4 @@
-package dev.queen.fitmax.login_sign_up
+package dev.queen.fitmax.ui.login_sign_up
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -7,7 +7,7 @@ import android.widget.Button
 import android.widget.TextView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import dev.queen.fitmax.home_and_splash.HomeActivity
+import dev.queen.fitmax.ui.home_and_splash.HomeActivity
 import dev.queen.fitmax.R
 import dev.queen.fitmax.databinding.ActivityLoginBinding
 

@@ -1,12 +1,12 @@
-package dev.queen.fitmax.home_and_splash
+package dev.queen.fitmax.ui.home_and_splash
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import dev.queen.fitmax.R
 import dev.queen.fitmax.databinding.ActivityHomeBinding
-import dev.queen.fitmax.fragments.PlanFragment
-import dev.queen.fitmax.fragments.ProfileFragment
-import dev.queen.fitmax.fragments.TrackFragment
+import dev.queen.fitmax.ui.fragments.PlanFragment
+import dev.queen.fitmax.ui.fragments.ProfileFragment
+import dev.queen.fitmax.ui.fragments.TrackFragment
 
 class HomeActivity : AppCompatActivity() {
     lateinit var binding : ActivityHomeBinding
