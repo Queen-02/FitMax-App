@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -90,6 +91,8 @@ class SignUpActivity : AppCompatActivity() {
         startActivity(intent)
 
         if (!error){
+
+            binding.pbRegister.visibility = View.VISIBLE
             var registerRequest = RegisterRequest(firstName, lastName, email, password, phoneNumber)
             makeRegistrationRequest(registerRequest)
         }
@@ -104,6 +107,7 @@ class SignUpActivity : AppCompatActivity() {
                 call: Call<RegisterResponse>,
                 response: Response<RegisterResponse>
             ) {
+                binding.pbRegister.visibility = View.GONE
                 if (response.isSuccessful){
                     var message = response.body()?.message
                     Toast.makeText(baseContext, message, Toast.LENGTH_LONG).show()
@@ -117,6 +121,7 @@ class SignUpActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+                binding.pbRegister.visibility = View.GONE
                Toast.makeText(baseContext, t.message, Toast.LENGTH_LONG).show()
             }
 
