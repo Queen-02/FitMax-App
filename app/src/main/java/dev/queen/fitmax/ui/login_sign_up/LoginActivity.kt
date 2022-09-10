@@ -4,18 +4,17 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
+import androidx.activity.viewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import dev.queen.fitmax.ui.home_and_splash.HomeActivity
-import dev.queen.fitmax.R
 import dev.queen.fitmax.databinding.ActivityLoginBinding
 import dev.queen.fitmax.models.LoginRequest
 import dev.queen.fitmax.models.LoginResponse
-import dev.queen.fitmax.service.APIClient
-import dev.queen.fitmax.service.APIInterface
+import dev.queen.fitmax.api.APIClient
+import dev.queen.fitmax.api.APIInterface
+import dev.queen.fitmax.viewmodel.UserViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -23,6 +22,8 @@ import retrofit2.Response
 class LoginActivity : AppCompatActivity() {
     lateinit var binding: ActivityLoginBinding
     lateinit var sharedPreferences: SharedPreferences
+    val userViewModel : UserViewModel by viewModels()//instantiating the view model
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -39,6 +40,18 @@ class LoginActivity : AppCompatActivity() {
         binding.btnLogIn.setOnClickListener {
             validateLogin()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        userViewModel.loginLiveData.observe(this, Observer{ loginResponse ->
+            Toast.makeText(baseContext, loginResponse.message, Toast.LENGTH_LONG).show()
+            persistLoginDetails(loginResponse)
+            startActivity(Intent(baseContext, HomeActivity::class.java))
+        })
+        userViewModel.loginErrorLiveData.observe(this, Observer { errorMsg ->
+            Toast.makeText(baseContext, errorMsg, Toast.LENGTH_LONG).show()
+        })
     }
 
     fun validateLogin() {
@@ -58,35 +71,9 @@ class LoginActivity : AppCompatActivity() {
 
         if (!error) {
             var loginRequest = LoginRequest(email, password)
-            makeLoginRequest(loginRequest)
+            userViewModel.login(loginRequest)
 
         }
-    }
-
-    fun makeLoginRequest(loginRequest: LoginRequest) {
-        var apiClient = APIClient.buildAPIClient(APIInterface::class.java)
-        var request = apiClient.loginUser(loginRequest)
-
-        request.enqueue(object : Callback<LoginResponse> {
-            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                if (response.isSuccessful) {
-                    val loginResponse = response.body()
-                    if (loginResponse != null) {
-                        Toast.makeText(baseContext, loginResponse.message, Toast.LENGTH_LONG).show()
-                        persistLoginDetails(loginResponse)
-                        startActivity(Intent(baseContext, HomeActivity::class.java))
-                    }
-                } else {
-                    val error = response.errorBody()?.string()
-                    Toast.makeText(baseContext, error, Toast.LENGTH_LONG).show()
-                }
-            }
-
-            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                TODO("Not yet implemented")
-            }
-
-        })
     }
 
 

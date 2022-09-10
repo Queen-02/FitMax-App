@@ -5,24 +5,24 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
 import android.view.View
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
+import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 import dev.queen.fitmax.ui.home_and_splash.HomeActivity
-import dev.queen.fitmax.R
 import dev.queen.fitmax.databinding.ActivitySignUpBinding
 import dev.queen.fitmax.models.RegisterRequest
 import dev.queen.fitmax.models.RegisterResponse
-import dev.queen.fitmax.service.APIClient
-import dev.queen.fitmax.service.APIInterface
+import dev.queen.fitmax.api.APIClient
+import dev.queen.fitmax.api.APIInterface
+import dev.queen.fitmax.repository.UserRepository
+import dev.queen.fitmax.viewmodel.UserViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class SignUpActivity : AppCompatActivity() {
     lateinit var binding: ActivitySignUpBinding
+    val userViewModel : UserViewModel by viewModels()//instantiating the view model
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,37 +94,19 @@ class SignUpActivity : AppCompatActivity() {
 
             binding.pbRegister.visibility = View.VISIBLE
             var registerRequest = RegisterRequest(firstName, lastName, email, password, phoneNumber)
-            makeRegistrationRequest(registerRequest)
+            userViewModel.register(registerRequest)
         }
     }
 
-    fun makeRegistrationRequest(registerRequest: RegisterRequest){
-        var apiClient = APIClient.buildAPIClient(APIInterface::class.java)
-        var request = apiClient.registerUser(registerRequest)
-
-        request.enqueue(object: Callback<RegisterResponse> {
-            override fun onResponse(
-                call: Call<RegisterResponse>,
-                response: Response<RegisterResponse>
-            ) {
-                binding.pbRegister.visibility = View.GONE
-                if (response.isSuccessful){
-                    var message = response.body()?.message
-                    Toast.makeText(baseContext, message, Toast.LENGTH_LONG).show()
-
-                    startActivity(Intent(baseContext, LoginActivity::class.java))
-
-                }else{
-                    var error = response.errorBody()?.string()
-                    Toast.makeText(baseContext, error, Toast.LENGTH_LONG).show()
-                }
-            }
-
-            override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
-                binding.pbRegister.visibility = View.GONE
-               Toast.makeText(baseContext, t.message, Toast.LENGTH_LONG).show()
-            }
-
+    override fun onResume() {
+        super.onResume()
+        userViewModel.registerLiveData.observe(this, Observer { registerResponse ->
+            Toast.makeText(baseContext, registerResponse.message, Toast.LENGTH_LONG).show()
+            startActivity(Intent(baseContext, LoginActivity::class.java))
+        })
+        userViewModel.registerErrorLiveData.observe(this, Observer { regError ->
+            Toast.makeText(baseContext, regError, Toast.LENGTH_LONG).show()
         })
     }
+
 }
