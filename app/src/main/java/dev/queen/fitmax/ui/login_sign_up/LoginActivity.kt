@@ -79,8 +79,9 @@ class LoginActivity : AppCompatActivity() {
 
     fun persistLoginDetails(loginResponse: LoginResponse) {
         val editor = sharedPreferences.edit()
+        val token = "Bearer ${loginResponse.access_token}"
         editor.putString("USER_ID", loginResponse.user_id)
-        editor.putString("ACCESS_TOKEN", loginResponse.access_token)
+        editor.putString("ACCESS_TOKEN", token)
         editor.putString("PROFILE_ID", loginResponse.profile_id)
         editor.apply()
 

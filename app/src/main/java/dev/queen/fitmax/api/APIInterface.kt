@@ -4,6 +4,8 @@ import dev.queen.fitmax.models.*
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface APIInterface {
@@ -15,4 +17,13 @@ interface APIInterface {
 
     @POST("/profile")
     suspend fun userProfile(@Body profileRequest: ProfileRequest): Response<ProfileResponse>
+
+
+//    GET REQUEST
+    @GET("/exercise-categories")
+    suspend fun fetchExerciseCategories(@Header("Authorization") token : String) : Response<List<ExerciseCategory>>
+
+    @GET("/exercises")
+    suspend fun fetchExercises(@Header("Authorization") token : String) : Response<List<Exercise>>
+
 }
