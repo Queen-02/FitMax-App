@@ -1,13 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:backgroundTint="#959191"
+    android:visibility="visible"
     tools:context=".ui.fragments.PlanFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Plan fragment" />
+   <TextView
+       android:id="@+id/tvPLanWork"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_marginStart="24dp"
+       android:layout_marginTop="8dp"
+       android:layout_marginEnd="24dp"
+       android:fontFamily="@font/bowlby_one"
+       android:shadowColor="#403E3E"
+       android:text="@string/plan_your_work_out"
+       android:textColor="#17272E"
+       android:textSize="24sp"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent" />
 
-</FrameLayout>
+   <Spinner
+       android:id="@+id/spDay"
+       android:layout_width="380dp"
+       android:layout_height="58dp"
+       android:layout_marginStart="24dp"
+       android:layout_marginTop="16dp"
+       android:layout_marginEnd="24dp"
+       android:background="#E8E3E3"
+       android:drawSelectorOnTop="true"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.47"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toBottomOf="@+id/tvPLanWork" />
+
+   <Spinner
+       android:id="@+id/spCategory"
+       android:layout_width="380dp"
+       android:layout_height="58dp"
+       android:layout_marginStart="24dp"
+       android:layout_marginTop="24dp"
+       android:layout_marginEnd="24dp"
+       android:background="#E8E3E3"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toBottomOf="@+id/spDay" />
+
+   <Spinner
+       android:id="@+id/spExsercise"
+       android:layout_width="380dp"
+       android:layout_height="58dp"
+       android:layout_marginStart="24dp"
+       android:layout_marginTop="24dp"
+       android:layout_marginEnd="24dp"
+       android:background="#E8E3E3"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toBottomOf="@+id/spCategory" />
+
+   <Button
+       android:id="@+id/btnSaveDay"
+       android:layout_width="match_parent"
+       android:layout_height="55dp"
+       android:layout_marginStart="32dp"
+       android:layout_marginTop="200dp"
+       android:layout_marginEnd="32dp"
+       android:backgroundTint="#065578"
+       android:text="Save Day"
+       android:textAllCaps="false"
+       app:circularflow_radiusInDP="5dp"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toBottomOf="@+id/btnAddItem" />
+
+   <Button
+       android:id="@+id/btnAddItem"
+       android:layout_width="match_parent"
+       android:layout_height="55dp"
+       android:layout_marginStart="32dp"
+       android:layout_marginTop="32dp"
+       android:layout_marginEnd="32dp"
+       android:backgroundTint="#065578"
+       android:text="Add Item"
+       android:textAllCaps="false"
+       app:circularflow_radiusInDP="5dp"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toBottomOf="@+id/spExsercise" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

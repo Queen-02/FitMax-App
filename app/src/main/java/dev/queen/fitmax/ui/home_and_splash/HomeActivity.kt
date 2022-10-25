@@ -23,26 +23,44 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setUpBottomNav()
-        triggerFetchExerciseCategories()
+//        triggerFetchExerciseCategories()
 
+        exerciseViewModel.getDbExerciseCategories()
+        exerciseViewModel.getDbExercises()
     }
 
-    fun triggerFetchExerciseCategories() {
-        sharedPreferences = getSharedPreferences(Constants.prefsFile, MODE_PRIVATE)
-        val getAccessToken = sharedPreferences.getString(Constants.access_token, "")
-        exerciseViewModel.fetchExerciseCatrgories(getAccessToken!!)
-        exerciseViewModel.fetchExercises(getAccessToken)
-
-    }
 
     override fun onResume() {
         super.onResume()
-        exerciseViewModel.exerciseLiveData.observe(this, Observer { categoryResponse ->
-            Toast.makeText(baseContext, "fetched ${categoryResponse.size}", Toast.LENGTH_LONG).show()
-        })
+        exerciseViewModel.exerciseCategoryLiveData.observe(this, Observer { categoryResponse ->
+                if (categoryResponse.isEmpty()) {
+                    exerciseViewModel.fetchAPiExerciseCatrgories(getAccessToken())
+                }
+                Toast.makeText(baseContext, "fetched ${categoryResponse.size}", Toast.LENGTH_LONG)
+                    .show()
+            })
         exerciseViewModel.errorLiveData.observe(this, Observer { errorMsg ->
             Toast.makeText(baseContext, errorMsg, Toast.LENGTH_LONG).show()
         })
+        exerciseViewModel.exerciseLiveData.observe(this, Observer { exercise ->
+            if (exercise.isEmpty()) {
+                exerciseViewModel.fetchApiExercises(getAccessToken())
+            }
+        })
+    }
+
+//    fun triggerFetchExerciseCategories() {
+//        exerciseViewModel.fetchAPiExerciseCatrgories(getAccessToken())
+//    }
+
+//    fun triggerFetchExercises() {
+//        exerciseViewModel.fetchApiExercises(getAccessToken())
+//
+//    }
+
+    fun getAccessToken(): String {
+        sharedPreferences = getSharedPreferences(Constants.prefsFile, MODE_PRIVATE)
+        return sharedPreferences.getString(Constants.access_token, "")!!
     }
 
     fun setUpBottomNav() {

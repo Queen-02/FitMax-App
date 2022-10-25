@@ -5,6 +5,7 @@ import dev.queen.fitmax.FitMax
 import dev.queen.fitmax.api.APIClient
 import dev.queen.fitmax.api.APIInterface
 import dev.queen.fitmax.database.FitmaxDB
+import dev.queen.fitmax.models.Exercise
 import dev.queen.fitmax.models.ExerciseCategory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -33,7 +34,7 @@ class ExerciseRepository {
         return exerciseCategoryDao.getExerciseCategory()
     }
 
-    suspend fun fetchExercises(accessToken: String){
+    suspend fun fetchApiExercises(accessToken: String){
         withContext(Dispatchers.IO){
             val response = apiClient.fetchExercises(accessToken)
             if (response.isSuccessful){
@@ -46,4 +47,12 @@ class ExerciseRepository {
         }
     }
 
+    fun getDbExercises() : LiveData<List<Exercise>>{
+        return exerciseDao.getExercises()
+    }
+
+    fun getExerciseByCategoryId(categoryId : String): LiveData<List<Exercise>>{
+        return exerciseDao.fetchExercisesByCategory(categoryId)
+
+    }
 }

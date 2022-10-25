@@ -54,5 +54,13 @@ dependencies {
     implementation "androidx.activity:activity-ktx:1.6.0"
     implementation "androidx.room:room-runtime:2.4.3"
     kapt "androidx.room:room-compiler:2.4.3"
-
+    //implementation 'androidx.appcompat:appcompat:1.5.1'
+    //implementation 'androidx.recyclerview:recyclerview:1.2.1'
+//    Chucker Dependencies
+    debugImplementation "com.github.chuckerteam.chucker:library:3.5.2"
+    releaseImplementation "com.github.chuckerteam.chucker:library-no-op:3.5.2"
+//    Okhttp Dependancy
+    implementation "com.squareup.okhttp3:okhttp:4.10.0"
+//    Installing fragment ktx
+    implementation "androidx.fragment:fragment-ktx:1.5.3"
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dev.queen.fitmax.models.Exercise
 import dev.queen.fitmax.models.ExerciseCategory
 import dev.queen.fitmax.repository.ExerciseRepository
 import kotlinx.coroutines.launch
@@ -13,6 +14,7 @@ class ExerciseViewModel : ViewModel() {
 
     lateinit var exerciseCategoryLiveData : LiveData<List<ExerciseCategory>>
     val errorLiveData = MutableLiveData<String>()
+    lateinit var exerciseLiveData: LiveData<List<Exercise>>
 
     fun fetchAPiExerciseCatrgories(accessToken: String) {
         viewModelScope.launch {
@@ -23,14 +25,21 @@ class ExerciseViewModel : ViewModel() {
         }
 
     }
-
     fun getDbExerciseCategories(){
         exerciseCategoryLiveData = exerciseRepository.getDbExerciseCategories()
     }
 
-    fun fetchExercises(accessToken: String) {
+    fun fetchApiExercises(accessToken: String) {
         viewModelScope.launch {
-            exerciseRepository.fetchExercises(accessToken)
+            exerciseRepository.fetchApiExercises(accessToken)
         }
+    }
+
+    fun getDbExercises(){
+        exerciseLiveData = exerciseRepository.getDbExercises()
+    }
+
+    fun getExerciseByCategoryId(categoryId: String){
+        exerciseLiveData = exerciseRepository.getExerciseByCategoryId(categoryId)
     }
 }
