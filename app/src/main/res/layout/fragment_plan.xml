@@ -19,7 +19,7 @@
        android:shadowColor="#403E3E"
        android:text="@string/plan_your_work_out"
        android:textColor="#17272E"
-       android:textSize="24sp"
+       android:textSize="20sp"
        app:layout_constraintEnd_toEndOf="parent"
        app:layout_constraintStart_toStartOf="parent"
        app:layout_constraintTop_toTopOf="parent" />

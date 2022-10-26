@@ -8,26 +8,36 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 
 import androidx.lifecycle.Observer
 import dev.queen.fitmax.databinding.FragmentPlanBinding
+import dev.queen.fitmax.models.Exercise
+import dev.queen.fitmax.models.ExerciseCategory
 import dev.queen.fitmax.ui.adapter.CategoryAdapter
 import dev.queen.fitmax.ui.adapter.ExerciseAdapter
 import dev.queen.fitmax.viewmodel.ExerciseViewModel
 
 class PlanFragment : Fragment() {
-    lateinit var binding: FragmentPlanBinding
+    var binding: FragmentPlanBinding? = null
     val exerciseViewModel: ExerciseViewModel by viewModels()
-//
+
+    val bind get() = binding!!
+
+    //
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentPlanBinding.inflate(inflater, container,false)
-        var view = binding.root
-        return view
+        binding = FragmentPlanBinding.inflate(inflater, container, false)
+        return bind.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
     }
 
     override fun onResume() {
@@ -35,59 +45,95 @@ class PlanFragment : Fragment() {
         setupSpinners()
         exerciseViewModel.getDbExerciseCategories()
         exerciseViewModel.getDbExercises()
-        exerciseViewModel.exerciseCategoryLiveData.observe(this, Observer { exerciseCategory ->
-            binding.spCategory.adapter = CategoryAdapter(requireContext(), exerciseCategory)
-            binding.spCategory.onItemSelectedListener = object : OnItemSelectedListener{
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    val selectedCategory = exerciseCategory.get(position)
-                    val categoryId = selectedCategory.categoryId
-                    exerciseViewModel.getExerciseByCategoryId(categoryId)
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                    TODO("Not yet implemented")
-                }
-
-            }
-        })
-
-        exerciseViewModel.exerciseLiveData.observe(this, Observer { exercise ->
-            binding.spExsercise.adapter = ExerciseAdapter(requireContext(), exercise)
-            binding.spExsercise.onItemSelectedListener = object : OnItemSelectedListener{
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    val selectedExercise = exercise.get(position)
-                    val categoryId = selectedExercise.categoryId
-                    exerciseViewModel.getExerciseByCategoryId(categoryId)
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                    TODO("Not yet implemented")
-                }
-
-            }
-        })
-
-
+        setExerciseCategory()
+        bind.btnAddItem.setOnClickListener {
+            clickAddItem()
+        }
     }
 
-    fun setupSpinners(){
+    fun setupSpinners() {
         setupDaySpinner()
     }
-    fun setupDaySpinner(){
-        val dayList = listOf<String>("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
-        val dayAdapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, dayList)
+
+    fun setupDaySpinner() {
+        val dayList = listOf<String>(
+            "Select Day",
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+        )
+        val dayAdapter =
+            ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, dayList)
         dayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
-        binding.spDay.adapter = dayAdapter
+        bind.spDay.adapter = dayAdapter
+    }
+
+    fun setExerciseCategory(){
+        exerciseViewModel.exerciseCategoryLiveData.observe(this, Observer { exerciseCategory ->
+            val firstCategory = ExerciseCategory("Select category", "0")
+            val displayCategories = mutableListOf(firstCategory)
+            displayCategories.addAll(exerciseCategory)
+            bind.spCategory.adapter = CategoryAdapter(requireContext(), displayCategories)
+            bind.spCategory.onItemSelectedListener = object : OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    val selectedCategory = displayCategories.get(position)
+                    val categoryId = selectedCategory.categoryId
+                    exerciseViewModel.getExerciseByCategoryId(categoryId)
+                    setExerciseSpinner()
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                }
+
+            }
+        })
+    }
+
+    fun setExerciseSpinner() {
+        exerciseViewModel.exerciseLiveData.observe(this, Observer { exercise ->
+            val firstExercise = Exercise("0", "", "", "0", "Select Exercise")
+            val displayExercise = mutableListOf(firstExercise)
+            displayExercise.addAll(exercise)
+            bind.spExsercise.adapter = ExerciseAdapter(requireContext(), displayExercise)
+            exerciseViewModel.getDbExercises()
+        })
+    }
+
+    //    Adding onclick on buttons
+    fun clickAddItem() {
+        var error = false
+        if (bind.spDay.selectedItemPosition == 0) {
+            error = true
+            Toast.makeText(requireContext(), "Select Day", Toast.LENGTH_LONG).show()
+
+        }
+        if (bind.spCategory.selectedItemPosition == 0) {
+            error = true
+            Toast.makeText(requireContext(), "Select Category", Toast.LENGTH_LONG).show()
+
+        }
+        if (bind.spExsercise.selectedItemPosition == 0) {
+            error = true
+            Toast.makeText(requireContext(), "Select Exercise", Toast.LENGTH_LONG).show()
+
+        }
+
+        if (!error){
+            val selectedExercise = bind.spExsercise.selectedItem as Exercise
+            exerciseViewModel.selectedExerciseIds.add(selectedExercise.exerciseId)
+             bind.spExsercise.setSelection(0)
+            bind.spCategory.setSelection(0)
+        }
     }
 
 }

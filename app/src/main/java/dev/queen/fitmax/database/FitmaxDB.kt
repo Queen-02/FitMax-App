@@ -14,9 +14,9 @@ abstract class FitmaxDB: RoomDatabase() {
 
     companion object{
         private var database: FitmaxDB? = null
-        fun getDatabase(context: Context): FitmaxDB{
-            if (database==null){
-                database= Room.databaseBuilder(context, FitmaxDB::class.java, "FitmaxDB")
+        fun getDatabase(context: Context): FitmaxDB {
+            if (database ==null){
+                database = Room.databaseBuilder(context, FitmaxDB::class.java, "FitmaxDB")
                     .fallbackToDestructiveMigration()
                     .build()
             }

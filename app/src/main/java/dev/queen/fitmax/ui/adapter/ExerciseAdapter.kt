@@ -20,7 +20,7 @@ class ExerciseAdapter(context: Context, var exercise: List<Exercise>): ArrayAdap
     }
 
     fun getExerciseCustomView(position: Int, convertView: View?, parent: ViewGroup): View {
-        var view = LayoutInflater.from(context).inflate(R.layout.exercise_custom_layout, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.exercise_custom_layout, parent, false)
         val tvSpinnerText = view.findViewById<TextView>(R.id.tvSpinnerText)
         tvSpinnerText.text = exercise.get(position).exerciseName
         return view
