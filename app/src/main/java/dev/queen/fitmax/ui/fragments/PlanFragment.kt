@@ -1,5 +1,6 @@
 package dev.queen.fitmax.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,13 +16,18 @@ import androidx.lifecycle.Observer
 import dev.queen.fitmax.databinding.FragmentPlanBinding
 import dev.queen.fitmax.models.Exercise
 import dev.queen.fitmax.models.ExerciseCategory
+import dev.queen.fitmax.models.WorkoutPlan
 import dev.queen.fitmax.ui.adapter.CategoryAdapter
 import dev.queen.fitmax.ui.adapter.ExerciseAdapter
+import dev.queen.fitmax.utils.Constants
 import dev.queen.fitmax.viewmodel.ExerciseViewModel
+import dev.queen.fitmax.viewmodel.WorkoutPlanViewModel
+import java.util.UUID
 
 class PlanFragment : Fragment() {
     var binding: FragmentPlanBinding? = null
     val exerciseViewModel: ExerciseViewModel by viewModels()
+    val workoutPlanViewModel : WorkoutPlanViewModel by viewModels()
 
     val bind get() = binding!!
 
@@ -49,6 +55,7 @@ class PlanFragment : Fragment() {
         bind.btnAddItem.setOnClickListener {
             clickAddItem()
         }
+        checkExistingWorkout()
     }
 
     fun setupSpinners() {
@@ -72,7 +79,7 @@ class PlanFragment : Fragment() {
         bind.spDay.adapter = dayAdapter
     }
 
-    fun setExerciseCategory(){
+    fun setExerciseCategory() {
         exerciseViewModel.exerciseCategoryLiveData.observe(this, Observer { exerciseCategory ->
             val firstCategory = ExerciseCategory("Select category", "0")
             val displayCategories = mutableListOf(firstCategory)
@@ -128,12 +135,27 @@ class PlanFragment : Fragment() {
 
         }
 
-        if (!error){
+        if (!error) {
             val selectedExercise = bind.spExsercise.selectedItem as Exercise
             exerciseViewModel.selectedExerciseIds.add(selectedExercise.exerciseId)
-             bind.spExsercise.setSelection(0)
+            bind.spExsercise.setSelection(0)
             bind.spCategory.setSelection(0)
         }
+    }
+
+    //    Checking existing workout plan
+    fun checkExistingWorkout() {
+        val pref =
+            requireActivity().getSharedPreferences(Constants.prefsFile, Context.MODE_PRIVATE)
+        val userId = pref.getString(Constants.userId, Constants.emptyString).toString()
+        workoutPlanViewModel.getExistingWorkoutPlan(userId)
+        workoutPlanViewModel.workoutPlanLiveData.observe(this, Observer { wrkPlan ->
+            if (wrkPlan == null){
+                val newWrkPlan = WorkoutPlan(UUID.randomUUID().toString(), userId)
+                workoutPlanViewModel.saveWorkoutPlan(newWrkPlan)
+            }
+        })
+
     }
 
 }
