@@ -28,4 +28,8 @@ class WorkoutPlanRepo {
     fun getWorkoutPlanByUserId(userId: String): LiveData<WorkoutPlan>{
         return  workoutPlanDao.getWorkoutPlanByUserId(userId)
     }
+
+    fun getTodayWorkoutPlanItem(workoutPlanId : String, dayNumber : Int): LiveData<WorkOutPlanItem>{
+        return workoutPlanItemDao.getTodayWorkoutPlanItem(workoutPlanId, dayNumber)
+    }
 }

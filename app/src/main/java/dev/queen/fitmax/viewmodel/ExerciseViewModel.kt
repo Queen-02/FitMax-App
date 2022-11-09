@@ -16,8 +16,6 @@ class ExerciseViewModel : ViewModel() {
     val errorLiveData = MutableLiveData<String>()
     lateinit var exerciseLiveData: LiveData<List<Exercise>>
 
-    var selectedExerciseIds = mutableListOf<String>()
-
     fun fetchAPiExerciseCatrgories(accessToken: String) {
         viewModelScope.launch {
             val response = exerciseRepository.fetchApiExerciseCategories(accessToken)
@@ -44,5 +42,9 @@ class ExerciseViewModel : ViewModel() {
 
     fun getExerciseByCategoryId(categoryId: String){
         exerciseLiveData = exerciseRepository.getExerciseByCategoryId(categoryId)
+    }
+
+    fun getExercisesByExerciseId(exerciseIds: List<String>): LiveData<List<Exercise>>{
+        return exerciseRepository.getExercisesByExerciseId(exerciseIds)
     }
 }

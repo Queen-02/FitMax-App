@@ -27,7 +27,8 @@ import java.util.UUID
 class PlanFragment : Fragment() {
     var binding: FragmentPlanBinding? = null
     val exerciseViewModel: ExerciseViewModel by viewModels()
-    val workoutPlanViewModel : WorkoutPlanViewModel by viewModels()
+    val workoutPlanViewModel: WorkoutPlanViewModel by viewModels()
+    lateinit var workoutPlanId: String
 
     val bind get() = binding!!
 
@@ -54,6 +55,10 @@ class PlanFragment : Fragment() {
         setExerciseCategory()
         bind.btnAddItem.setOnClickListener {
             clickAddItem()
+        }
+
+        bind.btnSaveDay.setOnClickListener {
+            clickSaveDay()
         }
         checkExistingWorkout()
     }
@@ -137,7 +142,7 @@ class PlanFragment : Fragment() {
 
         if (!error) {
             val selectedExercise = bind.spExsercise.selectedItem as Exercise
-            exerciseViewModel.selectedExerciseIds.add(selectedExercise.exerciseId)
+            workoutPlanViewModel.selectedExerciseIds.add(selectedExercise.exerciseId)
             bind.spExsercise.setSelection(0)
             bind.spCategory.setSelection(0)
         }
@@ -150,11 +155,45 @@ class PlanFragment : Fragment() {
         val userId = pref.getString(Constants.userId, Constants.emptyString).toString()
         workoutPlanViewModel.getExistingWorkoutPlan(userId)
         workoutPlanViewModel.workoutPlanLiveData.observe(this, Observer { wrkPlan ->
-            if (wrkPlan == null){
+            if (wrkPlan == null) {
                 val newWrkPlan = WorkoutPlan(UUID.randomUUID().toString(), userId)
                 workoutPlanViewModel.saveWorkoutPlan(newWrkPlan)
+            } else {
+                workoutPlanId = wrkPlan.workoutPlanId
             }
         })
+    }
+
+    fun getDayNumber(day: String): Int? {
+        val dayMap = HashMap<String, Int>()
+        dayMap.put("Monday", 1)
+        dayMap.put("Tuesday", 2)
+        dayMap.put("Wednesday", 3)
+        dayMap.put("Thursday", 4)
+        dayMap.put("Friday", 5)
+        dayMap.put("Saturday", 6)
+        dayMap.put("Sunday", 7)
+
+        return dayMap.get(day) ?: -1
+    }
+
+    fun clickSaveDay() {
+        if (bind.spDay.selectedItemPosition == 0) {
+            Toast.makeText(requireContext(), "Selected Day", Toast.LENGTH_LONG).show()
+            return
+        }
+        val day = bind.spDay.selectedItem.toString()
+        val dayNumber = getDayNumber(day)
+        if (workoutPlanViewModel.selectedExerciseIds.isEmpty()) {
+            Toast.makeText(requireContext(), "Selected some exercises for $day", Toast.LENGTH_LONG)
+                .show()
+        }
+
+        if (dayNumber != null) {
+            workoutPlanViewModel.createWorkoutPlanItem(dayNumber, workoutPlanId)
+        }
+        bind.spDay.setSelection(0)
+
 
     }
 

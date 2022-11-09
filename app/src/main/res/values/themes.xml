@@ -18,4 +18,10 @@
         <item name="android:windowBackground">@drawable/splash_bg</item>
         <item name="android:windowFullscreen">true</item>
     </style>
+
+    <style name="BoltTextView">
+        <item name="android:fontFamily">@font/adamina</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
 </resources>

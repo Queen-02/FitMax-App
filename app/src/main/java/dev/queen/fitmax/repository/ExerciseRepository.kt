@@ -58,4 +58,8 @@ class ExerciseRepository {
     fun getExerciseByCategoryId(categoryId : String): LiveData<List<Exercise>>{
         return exerciseDao.getExercisesByCategoryId(categoryId)
     }
+
+    fun getExercisesByExerciseId(exerciseIds : List<String>) : LiveData<List<Exercise>>{
+        return exerciseDao.getTodayExercisesByExerciseIds(exerciseIds)
+    }
 }

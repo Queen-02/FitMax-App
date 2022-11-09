@@ -12,6 +12,9 @@
     <string name="track">Track</string>
     <string name="plan">Plan</string>
     <string name="plan_your_work_out">Plan your work out...</string>
+    <string name="set">Set</string>
+    <string name="weight">Weight</string>
+    <string name="reps">Reps</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 </resources>
